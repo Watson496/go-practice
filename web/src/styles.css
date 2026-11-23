@@ -1,0 +1,542 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--mantine-color-gray-1);
+}
+
+.app-stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.app-scale-box {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.app-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1720px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--mantine-color-body);
+  transform-origin: top left;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-rows: 56px minmax(0, 1fr);
+  grid-template-columns: 280px 1440px;
+  height: 100%;
+}
+
+.app-header {
+  grid-column: 1 / -1;
+  z-index: 10;
+  height: 56px;
+  padding: 0 var(--mantine-spacing-md);
+  border-bottom: 1px solid var(--mantine-color-gray-3);
+  background: var(--mantine-color-body);
+}
+
+.app-title {
+  flex: 0 0 auto;
+}
+
+.header-spacer {
+  flex: 1;
+}
+
+.saved-games-side {
+  min-height: 0;
+  padding: var(--mantine-spacing-sm);
+  border-right: 1px solid var(--mantine-color-gray-3);
+}
+
+.saved-game-list {
+  min-height: 0;
+}
+
+.saved-game-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.saved-game-sortable {
+  list-style: none;
+  position: relative;
+}
+
+.saved-game-items {
+  margin: 0;
+  padding: 0;
+}
+
+.saved-game-sortable[data-dragging] {
+  z-index: 1;
+  background: var(--mantine-color-body);
+  box-shadow: var(--mantine-shadow-md);
+}
+
+.saved-game-handle,
+.saved-game-handle-space {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 32px;
+}
+
+.saved-game-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--mantine-radius-sm);
+  color: var(--mantine-color-gray-6);
+  cursor: grab;
+}
+
+.saved-game-handle:focus-visible {
+  outline: 2px solid var(--mantine-primary-color-filled);
+  outline-offset: -2px;
+}
+
+.saved-game-row {
+  flex: 1;
+  min-width: 0;
+}
+
+.saved-game-link {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 開いている対局は操作できないが、選択中であることが分かる見た目を保つ */
+.saved-game-link.is-open-game[data-disabled] {
+  opacity: 1;
+}
+
+.app-main {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.review-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(20rem, 1fr);
+  gap: var(--mantine-spacing-sm);
+  height: 100%;
+  padding: var(--mantine-spacing-sm);
+}
+
+.board-pane {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.board-frame {
+  display: grid;
+  min-height: 0;
+  place-items: center;
+  overflow: hidden;
+}
+
+.goban {
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.goban > * {
+  max-width: 100%;
+}
+
+.board-frame .goban {
+  width: min(100%, 926px);
+  max-height: 100%;
+}
+
+.board-controls,
+.board-footer {
+  min-height: 34px;
+}
+
+.board-footer {
+  flex-wrap: nowrap;
+  border-top: 1px solid var(--mantine-color-gray-3);
+  padding-top: var(--mantine-spacing-xs);
+}
+
+.ownership-slider {
+  margin-left: auto;
+}
+
+.analysis-pane {
+  display: grid;
+  grid-template-rows: 2rem 5rem 11.5rem 12.5rem 14rem minmax(0, 1fr);
+  gap: var(--mantine-spacing-sm);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.game-summary-card,
+.evaluation-card,
+.candidate-card,
+.tree-card {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.game-summary-card {
+  width: 100%;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  height: 5rem;
+  padding: 6px;
+}
+
+.game-summary-card:disabled {
+  cursor: default;
+}
+
+.workspace-mode-control {
+  width: calc(100% - 1rem);
+  margin: 0 auto;
+}
+
+.player-summary {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+  border: 1px solid transparent;
+  border-radius: var(--mantine-radius-sm);
+  padding: 4px 6px;
+}
+
+.player-summary.is-active {
+  border-color: var(--mantine-primary-color-filled);
+  background: var(--mantine-primary-color-light);
+}
+
+.black-player {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.player-stone {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.white-stone {
+  border: 1px solid var(--mantine-color-gray-4);
+  background: white;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 18%);
+}
+
+.black-stone {
+  border: 1px solid var(--mantine-color-dark-7);
+  background: var(--mantine-color-dark-8);
+  box-shadow: inset 0 1px 1px rgb(255 255 255 / 16%);
+}
+
+.position-summary {
+  display: grid;
+  min-width: 9.5rem;
+  place-content: center;
+  padding: 0 var(--mantine-spacing-xs);
+  text-align: center;
+}
+
+.evaluation-card {
+  height: 11.5rem;
+}
+
+.evaluation-placeholder {
+  display: grid;
+  height: 104px;
+  place-items: center;
+  text-align: center;
+}
+
+.candidate-card {
+  height: 12.5rem;
+}
+
+.candidate-placeholder {
+  display: flex;
+  height: calc(100% - 1.75rem);
+  align-items: center;
+  justify-content: center;
+  gap: var(--mantine-spacing-xs);
+}
+
+.evaluation-chart {
+  display: block;
+  width: 100%;
+  height: 104px;
+  margin-top: 4px;
+  cursor: pointer;
+}
+
+.evaluation-chart.is-disabled {
+  cursor: default;
+}
+
+.evaluation-zero {
+  stroke: var(--mantine-color-gray-4);
+  stroke-dasharray: 4 4;
+}
+
+.evaluation-score-line,
+.evaluation-winrate-line {
+  fill: none;
+  stroke-width: 2;
+}
+
+.evaluation-score-line {
+  stroke: var(--mantine-primary-color-filled);
+}
+
+.evaluation-winrate-line {
+  stroke: var(--mantine-color-orange-6);
+}
+
+.evaluation-score-point,
+.evaluation-score-current {
+  fill: var(--mantine-primary-color-filled);
+}
+
+.evaluation-winrate-point,
+.evaluation-winrate-current {
+  fill: var(--mantine-color-orange-6);
+}
+
+.evaluation-score-current,
+.evaluation-winrate-current {
+  stroke: white;
+  stroke-width: 2;
+}
+
+.evaluation-tick {
+  stroke: var(--mantine-color-gray-5);
+}
+
+.evaluation-label {
+  fill: var(--mantine-color-dimmed);
+  font-size: 9px;
+}
+
+.evaluation-current-line {
+  stroke: var(--mantine-color-red-6);
+  stroke-dasharray: 3 3;
+  stroke-width: 1;
+}
+
+.candidate-card table {
+  table-layout: fixed;
+}
+
+.candidate-card .mantine-Table-td {
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+
+.candidate-card td:first-child {
+  width: 5.5rem;
+}
+
+.candidate-card td:nth-child(2) {
+  width: auto;
+}
+
+.candidate-metrics span {
+  color: var(--mantine-color-dimmed);
+}
+
+.candidate-metrics {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 0.65rem;
+}
+
+.candidate-metrics > *:not(.candidate-pv) {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.candidate-swatch {
+  display: inline-block;
+  flex: 0 0 0.75rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 1px solid rgb(0 0 0 / 20%);
+  border-radius: 50%;
+}
+
+.candidate-pv {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tree-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.game-tree-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.review-panel {
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.review-tab-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.empty-state {
+  width: min(40rem, calc(100% - 2rem));
+  margin: 2rem auto;
+}
+
+.game-tree-canvas {
+  position: relative;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.game-tree-lines {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.game-tree-lines path {
+  fill: none;
+  stroke: var(--mantine-color-gray-4);
+  stroke-width: 1.5;
+}
+
+.game-tree-lines path.is-main-line {
+  stroke: var(--mantine-color-dark-6);
+  stroke-width: 3;
+}
+
+.game-tree-lines path.is-variation {
+  stroke-dasharray: 4 3;
+}
+
+.game-tree-node {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 64px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--mantine-color-text);
+  cursor: pointer;
+  transform: translate(-32px, -14px);
+  text-align: center;
+}
+
+.game-tree-context-target {
+  position: fixed;
+  z-index: 1000;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.game-tree-node:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.game-tree-stone {
+  display: grid;
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 1px solid var(--mantine-color-gray-6);
+  border-radius: 50%;
+  background: var(--mantine-color-gray-2);
+  color: var(--mantine-color-dark-7);
+  font-size: 11px;
+  line-height: 1;
+}
+
+.game-tree-node.is-black .game-tree-stone {
+  background: var(--mantine-color-dark-8);
+  color: white;
+}
+
+.game-tree-node.is-white .game-tree-stone {
+  background: white;
+  color: var(--mantine-color-dark-8);
+}
+
+.game-tree-node.is-current .game-tree-stone {
+  outline: 3px solid var(--mantine-primary-color-filled);
+  outline-offset: 2px;
+}
+
+.game-tree-label {
+  width: 100%;
+  overflow: hidden;
+  font-size: var(--mantine-font-size-xs);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.game-tree-node.is-variation .game-tree-stone {
+  opacity: 0.72;
+}
+
+.game-tree-node.is-variation .game-tree-label {
+  color: var(--mantine-color-gray-6);
+  font-weight: 500;
+}
+
+.game-tree-node.is-highlighted .game-tree-label {
+  color: var(--mantine-color-blue-7);
+  font-weight: 700;
+}

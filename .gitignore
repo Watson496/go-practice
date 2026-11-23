@@ -1,0 +1,13 @@
+# KataGoが作業ディレクトリへ出力する診断ログ
+/analysis_logs/
+
+# ローカルのビルド生成物
+/bin/
+
+# フロントエンドの依存関係、キャッシュ、ビルド生成物
+/.pnpm-store/
+/web/node_modules/
+/web/dist/
+
+# APIサーバーが保存するローカルの対局記録
+/data/

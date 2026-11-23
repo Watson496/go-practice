@@ -1,0 +1,3 @@
+go test fuzz v1
+byte('\x01')
+[]byte("Z019001B0700%00,001009")

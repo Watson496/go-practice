@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  go-check:
+    name: Goの検査
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Goの書式と静的検査を実行する
+        run: make check.server
+      - name: Goのパッケージをテストする
+        run: make test.server
+
+  frontend-check:
+    name: フロントエンドの検査
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: web/package.json
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 26.13.1
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+      - name: フロントエンドの依存関係を導入する
+        run: pnpm --dir web install --frozen-lockfile
+      - name: フロントエンドをテストする
+        env:
+          TZ: Asia/Tokyo
+        run: make test.web
+      - name: フロントエンドを静的検査・整形検査する
+        run: make check.web
+      - name: フロントエンドの型とビルドを検査する
+        run: make build.web
