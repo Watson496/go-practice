@@ -17,7 +17,11 @@ Go Practiceの実装を変更する開発者向けの案内である。チュー
 
 - [ビルド環境](reference/build-environment.md)
 - [開発コマンドと起動オプション](reference/commands.md)
+- [HTTP APIのエラー応答](reference/http-errors.md)
 
 ## 解説
 
 - [ブラウザ・MCP・Goサーバーの関係](explanation/architecture.md)
+- [局面の同期と操作の競合](explanation/position-synchronization.md)
+- [対局の保存と復元](explanation/persistence.md)
+- [テストのアーキテクチャ](explanation/test-architecture.md)
